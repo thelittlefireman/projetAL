@@ -1,0 +1,18 @@
+FROM tutum/nginx
+RUN rm /etc/nginx/sites-enabled/default
+ADD nginx /etc/nginx/
+#ADD recipes-rss /etc/nginx/recipes-rss
+
+# Remove the default Nginx configuration file
+RUN rm -v /etc/nginx/nginx.conf
+
+# Copy a configuration file from the current directory
+ADD nginx.conf /etc/nginx/
+
+# Append "daemon off;" to the configuration file
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN cat /etc/nginx/nginx.conf
+
+# Expose ports
+EXPOSE 80
+

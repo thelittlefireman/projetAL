@@ -1,0 +1,14 @@
+# Pull base image
+From tomcat:7-jre8
+
+EXPOSE 8080
+# Maintainer
+MAINTAINER "mainainer"
+
+# Copy to images tomcat path
+ADD eureka.war /usr/local/tomcat/webapps/
+
+#RUN sed "$((`wc -l < /usr/local/tomcat/conf/tomcat-users.xml`-1))i <user username=\"admin\" password=\"admin\" roles=\"manager-gui,admin-gui\" />" 
+
+ADD tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
+

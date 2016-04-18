@@ -1,0 +1,21 @@
+# Utilisation d'un docker ayant java 8
+From java:8
+
+# Ouverture des port 9191 et 9192
+EXPOSE 9191 9192
+# Maintainer
+MAINTAINER "maintainer"
+
+# Copie du dossier recipes-rss dans le docker
+ADD recipes-rss /recipes-rss
+
+# On se place dans le dossier copié
+WORKDIR /recipes-rss
+
+# Copie du jar dans le docker
+ADD middle.jar middle.jar
+
+ENV APP_ENV=dev
+
+# Execution du jar au lancement du docker
+ENTRYPOINT ["java","-jar","/recipes-rss/middle.jar"]

@@ -1,0 +1,22 @@
+# Utilisation d'un docker ayant java 8
+From java:8
+
+# Ouverture des port 9090 et 9092
+EXPOSE 9090 9092 
+
+# Maintainer
+MAINTAINER "maintainer"
+
+# Copie du dossier recipes-rss dans le docker
+ADD recipes-rss /recipes-rss
+
+# On se place dans le dossier copié
+WORKDIR /recipes-rss
+
+# Copie du jar dans le docker
+ADD edge.jar edge.jar
+
+ENV APP_ENV=dev
+
+# Execution du jar au lancement du docker
+ENTRYPOINT ["java","-jar","/recipes-rss/edge.jar"]

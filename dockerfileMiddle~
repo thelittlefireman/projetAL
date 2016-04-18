@@ -1,0 +1,27 @@
+# Utilisation d'un docker ayant java 8
+From java:8
+
+# Ouverture des port 9191 et 9192
+EXPOSE 9191 9192
+# Maintainer
+MAINTAINER "maintainer"
+
+# Copie du dossier recipes-rss dans le docker
+ADD recipes-rss /recipes-rss
+
+# On se place dans le dossier copié
+WORKDIR /recipes-rss
+
+# Copie du jar dans le docker
+ADD middle.jar middle.jar
+
+ENV APP_ENV=dev
+
+RUN sed -i -e 's/localhost/eureka/g' /usr/local/recipes-rss/rss-edge/src/main/resources/edge.properties
+RUN sed -i -e 's/localhost/eureka/g' /usr/local/recipes-rss/rss-middletier/src/main/resources/middletier.properties
+RUN sed -i -e 's/rss.store=inmemory/rss.store=cassandra/g' /usr/local/recipes-rss/rss-middletier/src/main/resources/middletier.properties
+RUN sed -i -e 's/cassandra.host=ec2-54-234-8-47.compute-1.amazonaws.com/cassandra.host=cassandra/g' /usr/local/recipes-rss/rss-middletier/src/main/resources/middletier.properties
+RUN sed -i -e 's/cassandra.port=7102/cassandra.port=9160/g' /usr/local/recipes-rss/rss-middletier/src/main/resources/middletier.properties
+
+# Execution du jar au lancement du docker
+ENTRYPOINT ["java","-jar","/recipes-rss/middle.jar"]

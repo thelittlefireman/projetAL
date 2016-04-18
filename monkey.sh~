@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec $(docker ps | awk '/docker_middletier*|docker_edge*/ {print $NF}' | shuf -n 1) bash -c "killall java"

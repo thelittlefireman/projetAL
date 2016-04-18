@@ -1,0 +1,101 @@
+version: '2'
+services:
+  nginx:
+    image: nginx
+    restart: always
+    build:
+      context: .
+      dockerfile: dockerfileNginx
+    links:
+      - edge1:edge1
+      - edge3:edge3
+      - edge2:edge2
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  cassandra:
+    build:
+      dockerfile: dockerCassandra
+      context: .
+    container_name: cassandra
+    restart: on-failure
+
+  eureka:
+    build:
+      dockerfile: dockerfileEureka
+      context: .
+    container_name: eureka
+    ports:
+      - "8080:80"
+    privileged: true
+    restart: on-failure
+
+  middletier1:
+    build:
+      dockerfile: dockerfileMiddle
+      context: .
+    links:
+      - eureka
+      - cassandra
+    restart: on-failure
+
+  middletier2:
+    build:
+      dockerfile: dockerfileMiddle
+      context: .
+    links:
+      - eureka
+      - cassandra
+    restart: on-failure
+
+  middletier3:
+    build:
+      dockerfile: dockerfileMiddle
+      context: .
+    links:
+      - eureka
+      - cassandra
+    restart: on-failure
+
+  edge1:
+    build:
+      context: .
+      dockerfile: dockerfileEdge
+    links:
+      - eureka
+      - middletier1
+    ports:
+      - "9090"
+    environment:
+      - EXCLUDE_PORTS=9092
+    restart: on-failure
+
+  edge2:
+    build:
+      context: .
+      dockerfile: dockerfileEdge
+    links:
+      - eureka
+      - middletier2
+    ports:
+      - "9090"
+    environment:
+      - EXCLUDE_PORTS=9092
+    restart: on-failure
+
+  edge3:
+    build:
+      context: .
+      dockerfile: dockerfileEdge
+    links:
+      - eureka
+      - middletier3
+    ports:
+      - "9090"
+    environment:
+      - EXCLUDE_PORTS=9092
+    restart: on-failure
+

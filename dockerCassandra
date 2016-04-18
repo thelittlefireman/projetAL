@@ -1,0 +1,11 @@
+# Utilisation d'un docker ayant java 8
+From java:8
+
+# Ouverture des port 9090 et 9092
+EXPOSE 9090 9092 
+
+# Maintainer
+MAINTAINER "maintainer"
+
+FROM cassandra:2.1
+RUN sed -i 's/^start_rpc.*$/start_rpc: true/' /etc/cassandra/cassandra.yaml
