@@ -1,18 +1,28 @@
+# Container configurer avec nginx
 FROM tutum/nginx
-RUN rm /etc/nginx/sites-enabled/default
-ADD nginx /etc/nginx/
-#ADD recipes-rss /etc/nginx/recipes-rss
 
-# Remove the default Nginx configuration file
+# Autheur
+MAINTAINER "Thomas&Jérémy"
+
+#on supprime le site par défault de nginx
+RUN rm /etc/nginx/sites-enabled/default
+
+#on ajout nginx
+ADD nginx /etc/nginx/
+
+# On supprime le fichier de configuration par défault
 RUN rm -v /etc/nginx/nginx.conf
 
-# Copy a configuration file from the current directory
+# Puis on copie le notre
 ADD nginx.conf /etc/nginx/
 
-# Append "daemon off;" to the configuration file
+# Sur les tuto il était conseille de mettre cette ligne 
+# pour éviter que nginx ne s'arrete
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+# On affiche le contenu de notre fichier de configuration 
+# de nginx pour vérifier du bon fonctionnement
 RUN cat /etc/nginx/nginx.conf
 
-# Expose ports
+# Ouverture du port 80
 EXPOSE 80
 

@@ -1,14 +1,17 @@
-# Pull base image
+# Container configurer en java 8 avec tomcat7
 From tomcat:7-jre8
 
-EXPOSE 8080
-# Maintainer
-MAINTAINER "mainainer"
+# Ouverture du port 80
+EXPOSE 80
 
-# Copy to images tomcat path
-ADD eureka.war /usr/local/tomcat/webapps/
+# Autheur
+MAINTAINER "Thomas&Jérémy"
 
-#RUN sed "$((`wc -l < /usr/local/tomcat/conf/tomcat-users.xml`-1))i <user username=\"admin\" password=\"admin\" roles=\"manager-gui,admin-gui\" />" 
+# Copie du war d'eureka dans tomcat du docker
+ADD eureka.war /usr/local/tomcat/webapps/ 
 
+# Ajout du xml utilisateurs permettant la connexion au manager tomcat
 ADD tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 
+# Ajout du xml permettant le changement de port vers le port 80
+ADD server.xml /usr/local/tomcat/conf/server.xml

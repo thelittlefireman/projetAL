@@ -1,4 +1,4 @@
-# Container configurer en java 8
+# Docker configurer en java 8
 From java:8
 
 # Ouverture des port 9090 et 9092

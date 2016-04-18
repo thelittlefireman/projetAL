@@ -1,17 +1,17 @@
-# Utilisation d'un docker ayant tomcat7 avec java 8
+# Container configurer en java 8 avec tomcat7
 From tomcat:7-jre8
 
 # Ouverture du port 80
 EXPOSE 80
 
-# Maintainer
-MAINTAINER "maintainer"
+# Autheur
+MAINTAINER "Thomas&Jérémy"
 
-# Copie du war d'eureka dans tomcat du docker
+# on ajoute eureka a tomcat
 ADD eureka.war /usr/local/tomcat/webapps/ 
 
-# Ajout du xml utilisateurs permettant la connexion au manager tomcat
+# On configure les comptes utilisateurs tomcat
 ADD tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 
-# Ajout du xml permettant le changement de port vers le port 80
+# Configuration de la redirection vers le port 80
 ADD server.xml /usr/local/tomcat/conf/server.xml
